@@ -1,0 +1,20 @@
+.PHONY: quality style test
+
+check_dirs := tau_eval tests
+
+# Check that source code meets quality standards
+
+quality:
+	ruff check $(check_dirs)
+	ruff format --check $(check_dirs)
+
+# Format source code automatically
+
+style:
+	ruff check $(check_dirs)
+	ruff format $(check_dirs)
+
+# Run tests for the library
+
+test:
+	python -m pytest -n auto --dist=loadfile -s -v ./tests/

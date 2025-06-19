@@ -1,7 +1,7 @@
+from faker import Faker
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine, OperatorConfig
 from presidio_anonymizer.operators import Operator, OperatorType
-from faker import Faker
 
 from .anonymizer import Anonymizer
 
@@ -260,23 +260,23 @@ class FakerAnonymizer(Operator):
         # entity_mapping is a dict of dicts containing mappings per entity type
         entity_mapping = params["entity_mapping"]
         entity_mapping_for_type = entity_mapping.get(entity_type)
-        
+
         if not entity_mapping_for_type:
             entity_mapping[entity_type] = {}
             entity_mapping_for_type = entity_mapping[entity_type]
-            
+
         if text in entity_mapping_for_type:
             return entity_mapping_for_type[text]
-        
+
         # Generate appropriate fake data based on entity type
         fake_value = self._generate_fake_value(entity_type)
         entity_mapping[entity_type][text] = fake_value
         return fake_value
-    
+
     def _generate_fake_value(self, entity_type: str) -> str:
         """Generate appropriate fake value based on entity type."""
         entity_type = entity_type.lower()
-        
+
         if "person" in entity_type or "name" in entity_type:
             return self.faker.name()
         elif "phone" in entity_type:
@@ -308,17 +308,17 @@ class FakerAnonymizer(Operator):
         else:
             # Default for unknown entity types
             return self.faker.word()
-            
+
     def validate(self, params: dict = None) -> None:
         """Validate operator parameters."""
         if "entity_mapping" not in params:
             raise ValueError("An input Dict called `entity_mapping` is required.")
         if "entity_type" not in params:
             raise ValueError("An entity_type param is required.")
-            
+
     def operator_name(self) -> str:
         return "faker_anonymizer"
-        
+
     def operator_type(self) -> OperatorType:
         return OperatorType.Anonymize
 

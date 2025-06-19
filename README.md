@@ -75,6 +75,13 @@ This allows complete control over what and how you evaluate.
 
 #### 3. Instantiate Tasks
 Tasks can be created using prebuilt options in `tau_eval.tasks`, or customized using `CustomTask`. Tau-Eval also supports [tasksource](https://github.com/sileod/tasksource) for dataset integration.
+```python
+from tau_eval.tasks import DeIdentification
+from tasknet import AutoTask
+
+anli = AutoTask("anli/a1")
+deid = DeIdentification(dataset="ai4privacy/pii-masking-400k")
+```
 
 #### 4. Configure and Run Your Experiment
 Define an experiment configuration:
@@ -83,7 +90,7 @@ from tau_eval.config import ExperimentConfig
 
 config = ExperimentConfig(
     exp_name="test-experiment",
-    classifier_name="medicalai/ClinicalBERT",
+    classifier_name="answerdotai/ModernBERT-base",
     train_task_models=True,
     train_with_generations=False,
 )
@@ -93,9 +100,9 @@ Run the experiment:
 from tau_eval.experiment import Experiment
 
 Experiment(
-    models=[m1, m2, m3, m4, m5],
-    metrics=["bertscore"],
-    tasks=[mednli, pii],
+    models=[TestModel(), ...],
+    metrics=["bertscore", "rouge"],
+    tasks=[anli, deid],
     config=config
 ).run()
 ```

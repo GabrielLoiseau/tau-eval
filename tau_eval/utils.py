@@ -1,4 +1,5 @@
 import copy
+from typing import Callable
 
 import numpy as np
 import tasknet as tn
@@ -16,7 +17,6 @@ from tau_eval.tasks.customtask import CustomTask
 
 from .logger import logger
 
-from typing import Callable
 
 # Type for metric functions
 MetricFunction = Callable[[str | list[str], str | list[str]], dict[str, float]]

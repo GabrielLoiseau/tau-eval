@@ -113,10 +113,7 @@ Tau-Eval includes built-in visualization tools to compare model anonymization st
 
 ## Tutorials
 
-You can find our tutorials to learn how to better leverage **Tau-Eval** in the [`examples/`]() folder.
-
-There you can also find a set of interesting case studies using real-world datasets! :chart_with_upwards_trend:
-
+You can explore our tutorials to master **Tau-Eval** more effectively in the [`examples/`](https://github.com/gabrielloiseau/tau-eval/tree/main/examples) folder.
 
 
 ## Contributors
@@ -129,6 +126,13 @@ There you can also find a set of interesting case studies using real-world datas
 If you use 𝜏 **Tau-Eval** in your work, please cite our paper as follows:
 
 ```
-
-
+@misc{loiseau2025taueval,
+      title={Tau-Eval: A Unified Evaluation Framework for Useful and Private Text Anonymization}, 
+      author={Gabriel Loiseau, Damien Sileo, Damien Riquet, Maxime Meyer, Marc Tommasi},
+      year={2025},
+      eprint={2506.05979},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2506.05979}, 
+}
 ```

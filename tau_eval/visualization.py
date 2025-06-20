@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
+from scipy.stats import kendalltau, pearsonr, spearmanr
 import numpy as np
-
 
 def get_all_dataset_names(data):
     """Extracts all dataset names from the Experiment data."""
@@ -343,12 +343,11 @@ def plot_radar_model_comparison(
     extracted_scores_for_plot = {}
 
     for model_name in model_list:
-        # e.g., "google/gemini-flash-1.5-8b/authorship"
         current_series_scores = []
 
         for dataset_key in ordered_dataset_keys:
             dataset_level_data = data.get(dataset_key, {})
-            # The model_key should directly point to the metrics dict
+
             model_specific_data = dataset_level_data.get(model_name, {})
             score = model_specific_data.get(metric_name, np.nan)
 
@@ -363,7 +362,7 @@ def plot_radar_model_comparison(
 
     for model_name in model_list:
         scores_for_radar = extracted_scores_for_plot.get(model_name, [])
-        if not scores_for_radar: # Should not happen if config is correct but good to check
+        if not scores_for_radar:
             print(f"Warning: No scores found for series '{model_name}'")
             continue
 
@@ -443,12 +442,11 @@ def plot_trade_off_metric(
     plt.figure(figsize=(12, 8))
 
     # Define a list of colors to cycle through for different groups
-    # Using 'tab10' which has 10 distinct colors. Add more if you expect more groups.
-    color_map = plt.cm.get_cmap("tab10")
+    color_map = plt.cm.get_cmap("tab20")
     colors = [color_map(i) for i in range(len(model_data))]
 
     for i, (group_name, scores_dict) in enumerate(model_data.items()):
-        if scores_dict["task"]:  # Ensure there are points to plot for this group
+        if scores_dict["task"]:
             plt.scatter(
                 scores_dict["anon"],
                 scores_dict["task"],
@@ -467,3 +465,95 @@ def plot_trade_off_metric(
 
     plt.tight_layout()
     plt.show()
+
+
+def compute_correlation2(data, metric1_name: str, metric2_name: str,
+                         method: str = "kendall", aggregate_across_tasks: bool = False, task_name: str = None) -> dict:
+    """
+    Computes correlation between two metrics for models.
+
+    Args:
+        data: Data structure containing metrics for models across tasks
+        metric1_name: Name of the first metric
+        metric2_name: Name of the second metric
+        method: Correlation method ('kendall', 'pearson', 'spearman')
+        aggregate_across_tasks: If True, compute single correlation across all tasks
+        task_name: Specific task name to compute correlation (ignored if aggregate_across_tasks=True)
+
+    Returns:
+        dict of {task_name: (correlation, p_value)} for all tasks
+    """
+
+    def _extract_metric_pairs(dataset_info):
+        """Extract valid metric pairs from a dataset."""
+        pairs = []
+        for model_key in get_all_model_method_names(data):
+            model_data = dataset_info.get(model_key, {})
+            if not isinstance(model_data, dict):
+                continue
+
+            val1 = model_data.get(metric1_name)
+            val2 = model_data.get(metric2_name)
+
+            if (isinstance(val1, (int, float)) and not np.isnan(val1) and
+                isinstance(val2, (int, float)) and not np.isnan(val2)):
+                pairs.append((val1, val2))
+        return pairs
+
+    def _compute_correlation(pairs):
+        """Compute correlation and p-value from metric pairs."""
+        if len(pairs) < 2:
+            return np.nan, np.nan
+
+        values1, values2 = zip(*pairs)
+
+        # Check for constant values
+        if len(set(values1)) < 2 or len(set(values2)) < 2:
+            return np.nan, np.nan
+
+        try:
+            if method == 'kendall':
+                corr, p_val = kendalltau(values1, values2)
+            elif method == 'pearson':
+                corr, p_val = pearsonr(values1, values2)
+            elif method == 'spearman':
+                corr, p_val = spearmanr(values1, values2)
+            else:
+                raise ValueError(f"Unsupported correlation method: {method}")
+            return corr, p_val
+        except Exception as e:
+            print(f"Error computing {method} correlation: {e}")
+            return np.nan, np.nan
+
+    # Aggregate across all tasks
+    if aggregate_across_tasks:
+        if task_name:
+            print(f"Warning: task_name '{task_name}' ignored when aggregate_across_tasks=True")
+
+        all_pairs = []
+        for dataset_name in get_all_dataset_names(data):
+            dataset_info = data.get(dataset_name)
+            if dataset_info:
+                all_pairs.extend(_extract_metric_pairs(dataset_info))
+
+        return {"aggregated_tasks":_compute_correlation(all_pairs)}
+
+    # Per-task correlation
+    tasks_to_process = [task_name] if task_name else get_all_dataset_names(data)
+
+    # Validate single task
+    if task_name and task_name not in get_all_dataset_names(data):
+        print(f"Warning: Task '{task_name}' not found")
+        return {f"{task_name}": (np.nan, np.nan)}
+
+    results = {}
+    for current_task in tasks_to_process:
+        dataset_info = data.get(current_task)
+        if not dataset_info:
+            results[current_task] = (np.nan, np.nan)
+            continue
+
+        pairs = _extract_metric_pairs(dataset_info)
+        results[current_task] = _compute_correlation(pairs)
+
+    return results

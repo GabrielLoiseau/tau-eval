@@ -59,6 +59,8 @@ class Experiment:
         self.metrics = metrics
         self.tasks = tasks
         self.args = config
+        self.results = None
+        self.output_dir = None
 
     def run(self, output_dir="", device="cuda"):
         self.output_dir = output_dir
@@ -165,67 +167,3 @@ class Experiment:
 
         return task_dataframes
 
-    def plot_tradeoff(
-        self,
-        task_name1,
-        target1,
-        task_name2,
-        target2,
-        x_label="Metric 1",
-        y_label="Metric 2",
-        title="Tradeoff Between Metrics",
-        figsize=(4, 4),
-    ):
-        from itertools import cycle
-
-        import matplotlib.pyplot as plt
-
-        task1 = self.results[task_name1]
-        task2 = self.results[task_name2]
-        model_names = []
-        x_vals = []
-        y_vals = []
-
-        for model_name, model in task1.items():
-            model_names.append(model_name)
-            if model_name in ["original_metrics", "metrics"]:
-                continue
-            else:
-                x_vals.append(model.get(target1))
-
-        for model_name, model in task2.items():
-            model_names.append(model_name)
-            if model_name in ["original_metrics", "metrics"]:
-                continue
-            else:
-                y_vals.append(model.get(target2))
-
-        markers = cycle(
-            ["o", "s", "D", "^", "v", "<", ">", "p", "*", "h", "H"]
-        )  # Cycle through different marker styles
-        plt.figure(figsize=figsize)
-
-        for i, (x_val, y_val) in enumerate(zip(x_vals, y_vals)):
-            marker = next(markers)
-            plt.scatter(
-                x_val,
-                y_val,
-                label=model_names[i] if model_names else f"Model {i + 1}",
-                marker=marker,
-                s=100,
-                alpha=0.7,
-                edgecolor="k",
-            )
-            # Annotate points with model names if provided
-            if model_names:
-                plt.text(x_val, y_val, model_names[i], fontsize=9, ha="right", va="bottom")
-
-        plt.axhline(0, color="gray", linewidth=0.5, linestyle="--")
-        plt.axvline(0, color="gray", linewidth=0.5, linestyle="--")
-        plt.grid(alpha=0.3)
-
-        plt.xlabel(x_label)
-        plt.ylabel(y_label)
-        plt.title(title)
-        plt.legend(loc="best", fontsize=9)
-        plt.tight_layout()

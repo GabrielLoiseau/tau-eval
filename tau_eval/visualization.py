@@ -467,7 +467,7 @@ def plot_trade_off_metric(
     plt.show()
 
 
-def compute_correlation2(data, metric1_name: str, metric2_name: str,
+def compute_correlation(data, metric1_name: str, metric2_name: str,
                          method: str = "kendall", aggregate_across_tasks: bool = False, task_name: str = None) -> dict:
     """
     Computes correlation between two metrics for models.

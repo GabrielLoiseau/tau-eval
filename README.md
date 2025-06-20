@@ -6,7 +6,7 @@
 
 [![GNU-GPLv3](https://img.shields.io/badge/license-%20%20GNU%20GPLv3%20-green?style=plastic)](LICENSE)
 [![v0.1.0](https://img.shields.io/badge/pypi-v0.1.0-orange)](https://pypi.org/project/tau-eval/0.1.0/)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/downloads/)
 [![Tutorials](https://img.shields.io/badge/tutorials-colab-orange)](https://github.com/gabrielloiseau/tau-eval/tree/main/examples)
 
 </div>
@@ -32,10 +32,10 @@ git clone https://github.com/gabrielloiseau/tau-eval.git
 cd tau-eval
 ```
 
-2) Create an environment with your own preferred package manager. We used [python 3.9](https://www.python.org/downloads/release/python-390/) and dependencies listed in [`pyproject.toml`](pyproject.toml). If you use [conda](https://docs.conda.io/en/latest/), you can just run the following commands from the root of the project:
+2) Create an environment with your own preferred package manager. We used [python 3.10](https://www.python.org/downloads/release/python-3100/) and dependencies listed in [`pyproject.toml`](pyproject.toml). If you use [conda](https://docs.conda.io/en/latest/), you can just run the following commands from the root of the project:
 
 ```
-conda create --name taueval python=3.9         # create the environment
+conda create --name taueval python=3.10         # create the environment
 conda activate taueval                         # activate the environment
 pip install --user -r pyproject.toml           # install the required packages
 ```

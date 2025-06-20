@@ -62,7 +62,7 @@ class Experiment:
         self.results = None
         self.output_dir = None
 
-    def run(self, output_dir="", device="cuda"):
+    def run(self, output_dir="results.json", device="cuda"):
         self.output_dir = output_dir
         logger.info("Running experiment...")
         out = {}

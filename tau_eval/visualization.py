@@ -413,7 +413,7 @@ def plot_trade_off_metric(
         if task_list and dataset_name not in task_list:
             continue
         for model_key, model_data_dict in dataset_info.items():
-            if model_key in ["metrics", "original_metrics"] or not isinstance(
+            if model_key in ["metrics", "original_metrics"] or model_key not in model_list or not isinstance(
                 model_data_dict, dict
             ):
                 continue

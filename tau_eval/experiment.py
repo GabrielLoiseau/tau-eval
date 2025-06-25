@@ -1,6 +1,7 @@
 import json
 import os
 from dataclasses import dataclass, field
+from typing import Callable
 
 import pandas as pd
 from rich.table import Table
@@ -51,8 +52,8 @@ class Experiment:
     def __init__(
         self,
         models: list[Anonymizer],
-        metrics: list[str],
-        tasks: list[Task],
+        metrics: list[str | Callable],
+        tasks: list[Task | CustomTask],
         config: ExperimentConfig = ExperimentConfig(),
     ):
         self.models = models
@@ -62,7 +63,7 @@ class Experiment:
         self.results = None
         self.output_dir = None
 
-    def run(self, output_dir="results.json", device="cuda"):
+    def run(self, output_dir="results.json"):
         self.output_dir = output_dir
         logger.info("Running experiment...")
         out = {}
@@ -79,7 +80,7 @@ class Experiment:
                     self.args.classifier_name,
                     self.args.train_task_models,
                     self.args.train_with_generations,
-                    device,
+                    self.args.device,
                 )
             if hasattr(task, "name"):
                 out[f"{task.name}_{i}"] = results
@@ -90,6 +91,29 @@ class Experiment:
         with open(self.output_dir, "w") as f:
             json.dump(out, f)
             logger.info("Results saved")
+
+
+    @classmethod
+    def from_json(cls, filepath: str):
+        """Loads experiment results from a JSON file."""
+        if not os.path.exists(filepath):
+            logger.error(f"File not found: {filepath}")
+            raise FileNotFoundError(f"The specified JSON file was not found: {filepath}")
+
+        with open(filepath, "r") as f:
+            try:
+                loaded_data = json.load(f)
+            except json.JSONDecodeError as e:
+                logger.error(f"Error decoding JSON from {filepath}: {e}")
+                raise ValueError(f"Invalid JSON format in {filepath}: {e}")
+
+        # Create a new experiment instance with empty lists for models, metrics, tasks
+        exp = cls(models=[], metrics=[], tasks=[], config=ExperimentConfig())
+        exp.results = loaded_data
+        exp.output_dir = filepath
+
+        logger.info(f"Experiment results loaded successfully from {filepath}")
+        return exp
 
     def summary(self, output_dir=None, to_rich=False):
         if output_dir is not None:

@@ -5,7 +5,7 @@
 <div align="center">
 
 [![GNU-GPLv3](https://img.shields.io/badge/license-%20%20GNU%20GPLv3%20-green?style=plastic)](LICENSE)
-[![v0.1.0](https://img.shields.io/badge/pypi-v0.1.0-orange)](https://pypi.org/project/tau-eval/0.1.0/)
+[![v0.1.0](https://img.shields.io/badge/pypi-v0.1.0-orange)](https://pypi.org/project/tau-eval/0.2.0/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/downloads/)
 [![Tutorials](https://img.shields.io/badge/tutorials-colab-orange)](https://github.com/gabrielloiseau/tau-eval/tree/main/examples)
 

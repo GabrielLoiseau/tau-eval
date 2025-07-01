@@ -40,7 +40,7 @@ This allows complete control over what and how you evaluate.
 3. Instantiate Tasks
 --------------------
 
-Tasks can be created using prebuilt options in `tau_eval.tasks`, or customized using `CustomTask`. Tau-Eval also supports [tasksource](https://github.com/sileod/tasksource) for dataset integration.
+Tasks can be created using prebuilt options in ``tau_eval.tasks``, or customized using ``CustomTask``. Tau-Eval also supports `tasksource <https://github.com/sileod/tasksource>`_ for dataset integration.
 
 .. code-block:: python
 

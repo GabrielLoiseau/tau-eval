@@ -1,4 +1,4 @@
-tau_eval package
+Tau-Eval package
 =================
 
 .. automodule:: tau_eval

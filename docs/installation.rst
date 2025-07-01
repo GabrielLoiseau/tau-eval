@@ -22,7 +22,7 @@ To install from source:
     git clone https://github.com/gabrielloiseau/tau-eval.git
     cd tau-eval
 
-2) Create an environment with your own preferred package manager. We used [python 3.10](https://www.python.org/downloads/release/python-3100/) and dependencies listed in [`pyproject.toml`](pyproject.toml). If you use [conda](https://docs.conda.io/en/latest/), you can just run the following commands from the root of the project:
+2) Create an environment with your own preferred package manager. We used `Python 3.10 <https://www.python.org/downloads/release/python-3100/>`_ and dependencies listed in `pyproject.toml <pyproject.toml>`_. If you use `conda <https://docs.conda.io/en/latest/>`_, you can just run the following commands from the root of the project:
 
 .. code-block:: bash
 

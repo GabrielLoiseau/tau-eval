@@ -6,12 +6,16 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import datetime
+import importlib
+import inspect
 import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
+import posixpath
+
+from sphinx.application import Sphinx
 
 project = 'Tau-Eval'
-copyright = '2025, Gabriel Loiseau'
+copyright = str(datetime.datetime.now().year)
 author = 'Gabriel Loiseau'
 
 version = '0.2.0'
@@ -36,3 +40,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'  # Set ReadTheDocs theme
+
+def setup(app: Sphinx):
+    pass

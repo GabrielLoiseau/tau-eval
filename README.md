@@ -118,7 +118,7 @@ You can explore our tutorials to master **Tau-Eval** more effectively in the [`e
 
 ## Contributors
 
-- **[Gabriel Loiseau](https://gabrielloiseau.github.io)**, *Hornetsecurty, Inria Lille*
+- **[Gabriel Loiseau](https://gabrielloiseau.github.io)**, *Hornetsecurity, Inria Lille*
 
 
 ## Citation

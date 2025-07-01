@@ -35,9 +35,9 @@ cd tau-eval
 2) Create an environment with your own preferred package manager. We used [python 3.10](https://www.python.org/downloads/release/python-3100/) and dependencies listed in [`pyproject.toml`](pyproject.toml). If you use [conda](https://docs.conda.io/en/latest/), you can just run the following commands from the root of the project:
 
 ```
-conda create --name taueval python=3.10         # create the environment
+conda create --name taueval python=3.10        # create the environment
 conda activate taueval                         # activate the environment
-pip install --user -r pyproject.toml           # install the required packages
+pip install -e .                               # install the required packages
 ```
 
 

@@ -10,7 +10,7 @@ authors = [
 maintainers = [
     { name = "Gabriel Loiseau", email = "gabriel.loiseau@hornetsecurity.com" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = [
     "Text anonymization",
     "evaluation",
